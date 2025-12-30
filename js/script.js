@@ -1,39 +1,72 @@
-const products = [
-  { name: "هاتف سامسونج", price: 500 },
-  { name: "حاسوب محمول", price: 900 },
-  { name: "سماعات", price: 50 },
-  { name: "ساعة ذكية", price: 120 },
-  { name: "لوحة مفاتيح", price: 30 }
-];
+let products = [];
 
+const productName = document.getElementById("productName");
+const productPrice = document.getElementById("productPrice");
+const addBtn = document.getElementById("addBtn");
 const productsDiv = document.getElementById("products");
 const searchInput = document.getElementById("search");
+const searchResults = document.getElementById("searchResults");
 
-// عرض المنتجات
-function displayProducts(items) {
+function displayProducts() {
   productsDiv.innerHTML = "";
-
-  items.forEach(product => {
+  products.forEach((product, index) => {
     const div = document.createElement("div");
     div.className = "product";
     div.innerHTML = `
-      <h4>${product.name}</h4>
-      <p>${product.price}$</p>
+      <span>${product.name} - ${product.price}$</span>
+      <div>
+        <button onclick="editProduct(${index})">تعديل</button>
+        <button onclick="deleteProduct(${index})">حذف</button>
+      </div>
     `;
     productsDiv.appendChild(div);
   });
 }
 
-// البحث
-searchInput.addEventListener("input", function () {
-  const value = searchInput.value.toLowerCase();
-
-  const filtered = products.filter(product =>
-    product.name.toLowerCase().includes(value)
-  );
-
-  displayProducts(filtered);
+addBtn.addEventListener("click", () => {
+  const name = productName.value.trim();
+  const price = parseFloat(productPrice.value);
+  if(name && !isNaN(price)){
+    products.push({name, price});
+    productName.value = "";
+    productPrice.value = "";
+    displayProducts();
+    displaySearchResults();
+  } else {
+    alert("الرجاء إدخال اسم وسعر صالح");
+  }
 });
 
-// عرض الكل عند التحميل
-displayProducts(products);
+function deleteProduct(index) {
+  products.splice(index, 1);
+  displayProducts();
+  displaySearchResults();
+}
+
+function editProduct(index) {
+  const newName = prompt("اسم المنتج الجديد:", products[index].name);
+  const newPrice = parseFloat(prompt("السعر الجديد:", products[index].price));
+  if(newName && !isNaN(newPrice)){
+    products[index] = {name: newName, price: newPrice};
+    displayProducts();
+    displaySearchResults();
+  }
+}
+
+function displaySearchResults() {
+  const value = searchInput.value.toLowerCase();
+  const filtered = products.filter(product => product.name.toLowerCase().includes(value));
+
+  searchResults.innerHTML = "";
+  filtered.forEach(product => {
+    const div = document.createElement("div");
+    div.className = "product";
+    div.innerHTML = `<span>${product.name} - ${product.price}$</span>`;
+    searchResults.appendChild(div);
+  });
+}
+
+searchInput.addEventListener("input", displaySearchResults);
+
+displayProducts();
+displaySearchResults();
