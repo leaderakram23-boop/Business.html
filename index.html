@@ -2,16 +2,26 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>منتجات</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة المنتجات</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <h2>🛒 قائمة المنتجات</h2>
+  <div class="admin">
+    <h2>لوحة التحكم</h2>
 
-  <input type="text" id="search" placeholder="ابحث عن منتج...">
+    <input type="text" id="productName" placeholder="اسم المنتج">
+    <input type="number" id="productPrice" placeholder="سعر المنتج">
+    <button id="addBtn">أضف المنتج</button>
 
-  <div id="products"></div>
+    <h3>قائمة المنتجات</h3>
+    <div id="products"></div>
+
+    <h3>بحث في المنتجات</h3>
+    <input type="text" id="search" placeholder="ابحث عن منتج...">
+    <div id="searchResults"></div>
+  </div>
 
   <script src="js/script.js"></script>
 </body>
